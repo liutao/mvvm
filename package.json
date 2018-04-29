@@ -1,0 +1,10 @@
+{
+  "name": "mvvm",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "node ./server/server.js"
+  },
+  "author": "",
+  "license": "ISC"
+}

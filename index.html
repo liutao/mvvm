@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style>
+		table{
+			border-collapse:collapse;
+		}
+
+		table,th, td{
+			border: 1px solid black;
+		}
+	</style>
+</head>
+<body>
+<div id="test"></div>
+<script type="module">
+	import MVVM from './src/mvvm.js'
+	new MVVM({
+		el: '#test',
+		data: {
+			head:['座次', '姓名', '绰号', '星宿', '操作'],
+			usersFiels: ['order', 'name', 'nikename', 'star'],
+			users: [{
+				order: '1',
+				name: '宋江',
+				nikename: '及时雨',
+				star: '天魁星'
+			}, {
+				order: '2',
+				name: '卢俊义',
+				nikename: '玉麒麟',
+				star: '天罡星'
+			},{
+				order: '3',
+				name: '吴用',
+				nikename: '智多星',
+				star: '天机星'
+			},{
+				order: '4',
+				name: '公孙胜',
+				nikename: '入云龙',
+				star: '天闲星'
+			},{
+				order: '5',
+				name: '关胜',
+				nikename: '大刀',
+				star: '天勇星'
+			}],
+			a:{}
+		},
+		create(){
+
+		},
+		methods: {
+			del(order){
+				this.users = this.users.filter((user)=>{
+					return user.order !=order;
+				});
+			},
+			edit(index){
+				this.users[index].isEditing = true;
+			},
+			change(index, id, type, event){
+				let value = event.target.value;
+				this.users[index][type] = value;
+				this.users[index].isEditing = false;
+			}
+		},
+		template: `<table >
+				<thead>
+					<tr>
+						<th class="head" mvvm:for="(index, value) of head">{{value}}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr mvvm:for="(index, item) of users">
+						<td mvvm:for="(i, field) of usersFiels" ><span mvvm:if="!item.isEditing || field == 'id' " >{{item[field] || ''}}</span><input :value="item[field] || ''" @blur="change(index, item.id, field, $event)" mvvm:else/></td>
+						<td ><span @click="edit(index)" >编辑</span> / <span @click="del(item.order)" >删除</span></td>
+					</tr>
+				</tbody>
+			</table>`
+	});
+</script>
+</body>
+</html>
